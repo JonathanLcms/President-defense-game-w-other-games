@@ -1,0 +1,1249 @@
+:root {
+  color-scheme: light;
+  --bg: #eef3f1;
+  --panel: #ffffff;
+  --ink: #17211c;
+  --muted: #5b6b62;
+  --line: #d6e0db;
+  --grid: #edf3f0;
+  --snake: #19a974;
+  --snake-head: #08744f;
+  --apple: #d83b3b;
+  --accent: #2367a6;
+  --shadow: 0 22px 60px rgba(22, 35, 29, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(35, 103, 166, 0.08), rgba(35, 122, 87, 0.1)),
+    var(--bg);
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.game-menu {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 30;
+}
+
+.game-menu-button {
+  padding: 10px 12px;
+  background: #17211c;
+  box-shadow: 0 10px 26px rgba(22, 35, 29, 0.22);
+}
+
+.game-sidebar {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 150px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 40px rgba(22, 35, 29, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.game-menu:hover .game-sidebar,
+.game-menu:focus-within .game-sidebar,
+.game-menu.open .game-sidebar {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.game-sidebar a {
+  display: block;
+  border-radius: 6px;
+  color: var(--ink);
+  font-weight: 800;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.game-sidebar a:hover,
+.game-sidebar a:focus-visible {
+  background: #eef3f1;
+  outline: none;
+}
+
+.game-shell {
+  width: min(100%, 1180px);
+  display: grid;
+  gap: 18px;
+}
+
+.game-panel {
+  scroll-margin-top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  min-height: calc(100vh - 24px);
+  display: grid;
+  align-content: center;
+}
+
+.game-panel:not(.active-game) {
+  display: none;
+}
+
+.game-sidebar a.active-game-link {
+  background: #17211c;
+  color: #ffffff;
+}
+
+.top-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 4vw, 2.35rem);
+  line-height: 1.05;
+}
+
+.top-bar p {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.score-card {
+  min-width: 106px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.score-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.score-card strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.45rem;
+}
+
+.board-wrap {
+  position: relative;
+  width: min(100%, 480px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fbfdfc;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.runner-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #dceaf3;
+}
+
+.runner-panel {
+  border-color: #cdddeb;
+}
+
+.coin-score strong {
+  color: #a76400;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.coin-score {
+  min-width: 220px;
+}
+
+.maze-panel {
+  border-color: #253343;
+  background: #101820;
+  color: #f4f7f5;
+}
+
+.maze-panel .top-bar p,
+.maze-panel .instructions {
+  color: #b7c4be;
+}
+
+.maze-panel .instructions strong {
+  color: #f4f7f5;
+}
+
+.maze-status {
+  border-color: #324657;
+  background: #172332;
+  min-width: 170px;
+}
+
+.maze-status span {
+  color: #a9b6c3;
+}
+
+.maze-status strong {
+  color: #f7d36b;
+}
+
+.maze-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 32 / 21;
+  margin: 0 auto;
+  border: 1px solid #324657;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #030608;
+}
+
+.maze-overlay {
+  background: rgba(3, 6, 8, 0.82);
+}
+
+.maze-overlay p {
+  color: #c4d0cb;
+}
+
+.maze-controls {
+  width: 174px;
+  display: grid;
+  grid-template-columns: repeat(3, 54px);
+  grid-template-areas:
+    ". up ."
+    "left down right";
+  gap: 6px;
+  margin: 18px auto 0;
+}
+
+.maze-arrow {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  font-size: 1.45rem;
+  line-height: 1;
+  background: #f7d36b;
+  color: #101820;
+}
+
+#mazeUpButton {
+  grid-area: up;
+}
+
+#mazeLeftButton {
+  grid-area: left;
+}
+
+#mazeDownButton {
+  grid-area: down;
+}
+
+#mazeRightButton {
+  grid-area: right;
+}
+
+.give-up-button {
+  display: block;
+  margin: 12px auto 0;
+  background: #c94f4f;
+  color: #ffffff;
+}
+
+.word-panel {
+  border-color: #d9d3e8;
+}
+
+.word-status strong {
+  color: #5f4b8b;
+  font-size: 1rem;
+}
+
+.word-board {
+  display: grid;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.word-row {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 352px);
+}
+
+.word-tile {
+  width: 100%;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #c8d1cc;
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--ink);
+  font-size: 1.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.word-tile.correct {
+  border-color: #2f8f5b;
+  background: #2f8f5b;
+  color: #ffffff;
+}
+
+.word-tile.present {
+  border-color: #c69c35;
+  background: #c69c35;
+  color: #ffffff;
+}
+
+.word-tile.missing {
+  border-color: #79827d;
+  background: #79827d;
+  color: #ffffff;
+}
+
+.word-form {
+  display: flex;
+  gap: 10px;
+  margin: 18px auto 0;
+  max-width: 420px;
+}
+
+.word-form input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font: inherit;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.word-form input:focus {
+  outline: 3px solid rgba(95, 75, 139, 0.18);
+  border-color: #5f4b8b;
+}
+
+.word-message {
+  min-height: 24px;
+  margin-top: 12px;
+  color: var(--muted);
+  text-align: center;
+  font-weight: 700;
+}
+
+.tank-panel {
+  border-color: #cfd7c3;
+}
+
+.tank-status {
+  min-width: 210px;
+}
+
+.tank-status strong {
+  color: #536b2d;
+  font-size: 0.96rem;
+}
+
+.tank-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 32 / 21;
+  margin: 0 auto;
+  border: 1px solid #bfcab1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #bcc8a8;
+}
+
+.tank-shop {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tank-shop[hidden] {
+  display: none;
+}
+
+.tank-shop button {
+  background: #536b2d;
+  padding: 11px 12px;
+}
+
+#tankNextStageButton {
+  grid-column: 1 / -1;
+  background: #2367a6;
+}
+
+.defense-panel {
+  border-color: #d0c8bd;
+}
+
+.defense-status {
+  min-width: 230px;
+}
+
+.defense-status strong {
+  color: #7b3f1d;
+  font-size: 0.92rem;
+}
+
+.defense-toolbar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.defense-toolbar button {
+  background: #5b6b62;
+  padding: 11px 10px;
+}
+
+.defense-tool.active,
+.defense-tab.active {
+  background: #7b3f1d;
+}
+
+#defenseWaveButton {
+  background: #2367a6;
+}
+
+#defenseBattleModeButton.active {
+  background: #26342d;
+}
+
+.defense-menu {
+  margin-bottom: 14px;
+}
+
+.defense-menu-panel {
+  display: none;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.defense-menu-panel.active {
+  display: grid;
+}
+
+.defense-build-section {
+  grid-column: 1 / -1;
+  padding-top: 12px;
+  border-top: 2px solid var(--line);
+}
+
+.defense-build-section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.defense-build-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #2d372f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.defense-build-section-title::-webkit-details-marker {
+  display: none;
+}
+
+.defense-build-section-title::before {
+  content: "▸";
+  transition: transform 0.15s ease;
+}
+
+.defense-build-section[open] > .defense-build-section-title::before {
+  transform: rotate(90deg);
+}
+
+.defense-build-items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding-top: 10px;
+}
+
+#defenseBuildPanel.active {
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, 1fr);
+  grid-template-columns: none;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.defense-menu-panel button {
+  background: #536b2d;
+  padding: 11px 10px;
+}
+
+.repair-panel {
+  grid-template-columns: 1fr;
+}
+
+.repair-list {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.repair-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7faf8;
+}
+
+.repair-row button {
+  background: #7b3f1d;
+}
+
+.ability-panel.active {
+  display: block;
+}
+
+.ability-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ability-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.ability-row span {
+  display: grid;
+  gap: 3px;
+  color: #2d372f;
+  font-weight: 700;
+}
+
+.ability-row small {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ability-row button {
+  background: #8a4522;
+}
+
+.merge-panel.active {
+  display: block;
+}
+
+.merge-list {
+  display: grid;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.merge-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.merge-row span {
+  display: grid;
+  gap: 3px;
+  color: #2d372f;
+  font-weight: 800;
+}
+
+.merge-row small {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.merge-row button {
+  background: #4b6f7d;
+}
+
+.merge-row button.alt {
+  background: #567d3e;
+}
+
+.stats-panel.active {
+  display: block;
+}
+
+.defense-stat-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.defense-stat-card {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.86rem;
+}
+
+.defense-stat-card strong {
+  color: #2d372f;
+  font-size: 0.94rem;
+}
+
+.defense-stat-card span {
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.handbook-panel.active {
+  display: block;
+}
+
+.demo-panel.active {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-panel button.active {
+  background: #5a2d83;
+  box-shadow: 0 0 0 3px rgba(138, 91, 214, 0.22);
+}
+
+.demo-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.demo-wave-control {
+  display: grid;
+  gap: 5px;
+  color: #2d372f;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.demo-wave-control input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(23, 33, 28, 0.18);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--text);
+  font: inherit;
+}
+
+.defense-handbook-list {
+  display: grid;
+  gap: 12px;
+  max-height: 340px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.defense-handbook-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.defense-handbook-tabs button {
+  background: #5b6b62;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+}
+
+.defense-handbook-tabs button.active {
+  background: #7b3f1d;
+}
+
+.defense-handbook-card {
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+}
+
+.defense-handbook-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #2d372f;
+}
+
+.defense-look-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin: 4px 0 10px;
+  align-items: start;
+}
+
+.defense-demo-label {
+  display: block;
+  margin: -2px 0 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.defense-look-item {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 4px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+}
+
+.defense-look-item canvas {
+  width: 92px;
+  height: 76px;
+  border-radius: 6px;
+  image-rendering: auto;
+}
+
+.defense-look-item span {
+  color: #2d372f;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.equipment-panel {
+  display: grid;
+  gap: 8px;
+  grid-column: 1 / -1;
+  padding: 10px;
+  border: 1px solid rgba(23, 33, 28, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.equipment-panel > strong,
+.equipment-panel > small {
+  color: #2d372f;
+}
+
+.equipment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.equipment-card {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(23, 33, 28, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.equipment-card.active {
+  border-color: #17211c;
+  box-shadow: 0 0 0 2px rgba(23, 33, 28, 0.12);
+}
+
+.equipment-icon {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--equipment-color);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.equipment-card small {
+  color: #5b6b62;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.defense-handbook-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.ability-handbook-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.ability-handbook-grid section {
+  display: grid;
+  gap: 5px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(23, 33, 28, 0.1);
+  border-radius: 8px;
+}
+
+.ability-handbook-grid section strong {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.ability-handbook-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.phoenix-handbook-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.phoenix-handbook-item {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid rgba(111, 73, 39, 0.18);
+  border-radius: 8px;
+}
+
+.phoenix-handbook-item canvas {
+  width: 104px;
+  height: 82px;
+  border-radius: 6px;
+}
+
+.phoenix-handbook-item span {
+  color: #6f4927;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.frost-handbook-item {
+  border-color: rgba(74, 137, 169, 0.22);
+}
+
+.frost-handbook-item span {
+  color: #376d8c;
+}
+
+.defense-handbook-card th,
+.defense-handbook-card td {
+  padding: 5px 6px;
+  border-top: 1px solid rgba(23, 33, 28, 0.1);
+  text-align: left;
+  color: var(--muted);
+}
+
+.defense-handbook-card th:first-child,
+.defense-handbook-card td:first-child {
+  width: 42px;
+  color: #2d372f;
+}
+
+.defense-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 18 / 8;
+  margin: 0 auto;
+  border: 1px solid #c9baaa;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #d7cfbd;
+}
+
+.defense-overlay {
+  background: rgba(247, 250, 248, 0.64);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(247, 250, 248, 0.88);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay h2 {
+  font-size: 2rem;
+}
+
+.overlay p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+button {
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 12px 18px;
+}
+
+button:hover {
+  filter: brightness(0.95);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(35, 103, 166, 0.28);
+  outline-offset: 3px;
+}
+
+.instructions {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.instructions strong {
+  color: var(--ink);
+}
+
+.secondary-button {
+  display: block;
+  margin: 18px auto 0;
+  background: #26342d;
+}
+
+@media (max-width: 560px) {
+  body {
+    display: block;
+    padding: 66px 10px 10px;
+  }
+
+  .game-menu {
+    top: 10px;
+    left: 10px;
+  }
+
+  .game-sidebar {
+    width: min(86vw, 260px);
+  }
+
+  .game-sidebar a {
+    padding: 9px 6px;
+    font-size: 0.78rem;
+  }
+
+  .game-panel {
+    padding: 12px;
+    scroll-margin-top: 88px;
+    min-height: calc(100vh - 20px);
+  }
+
+  .top-bar {
+    display: grid;
+  }
+
+  .score-card {
+    width: 100%;
+  }
+
+  .word-form {
+    display: grid;
+  }
+
+  .word-tile {
+    height: 44px;
+    font-size: 1.25rem;
+  }
+
+  .tank-shop {
+    grid-template-columns: 1fr;
+  }
+
+  .defense-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .defense-menu-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .defense-build-items {
+    grid-template-columns: 1fr;
+  }
+
+  .defense-stat-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.defense-story-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.defense-story-button {
+  background: linear-gradient(135deg, #3f6d33, #2e5230);
+  color: #f2e8c9;
+}
+
+.defense-story-button:hover {
+  filter: brightness(1.08);
+}
+
+.defense-story-status {
+  color: #5b6b62;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.defense-next-preview:not([hidden]) {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 6px;
+  justify-items: center;
+}
+
+.defense-next-preview .preview-label {
+  color: #5b6b62;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.defense-next-preview .preview-chip {
+  display: grid;
+  gap: 3px;
+  min-width: 260px;
+  max-width: 340px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--preview-a), var(--preview-b));
+  color: #fff;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.defense-next-preview .preview-chip small {
+  opacity: 0.88;
+  line-height: 1.35;
+}
+
+button.equipment-card {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+button.equipment-card:disabled {
+  cursor: default;
+}
+
+.equipment-detail {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  width: 100%;
+}
+
+.equipment-detail-icon {
+  width: 52px;
+  height: 52px;
+  font-size: 1rem;
+}
+
+.equipment-stats {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.equipment-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.equipment-stat-row .stat-up {
+  color: #2e8c62;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.milestone-note {
+  color: #6b4f12;
+  font-weight: 700;
+}
+
+.equipment-detail-actions {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.defense-president-upgrades {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 2px solid var(--line);
+}
+
+.defense-president-upgrades small {
+  color: #2d372f;
+  font-weight: 800;
+}
+
+.defense-handbook-group {
+  border-top: 2px solid var(--line);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.defense-handbook-group:first-of-type {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.defense-handbook-group summary {
+  cursor: pointer;
+  color: #2d372f;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.defense-handbook-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.defense-handbook-group summary::before {
+  content: "▸";
+  transition: transform 0.15s ease;
+}
+
+.defense-handbook-group[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.defense-handbook-group .ability-handbook-grid {
+  padding-top: 10px;
+}
+
+@keyframes defense-deny-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.defense-president-upgrades button.denied {
+  animation: defense-deny-shake 0.3s ease;
+  background: #8c2f39;
+}

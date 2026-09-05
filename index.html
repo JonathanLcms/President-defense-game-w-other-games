@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Apple Sprint</title>
+  <link rel="stylesheet" href="styles.css?v=troops-4">
+</head>
+<body>
+  <div class="game-menu">
+    <button class="game-menu-button" type="button" aria-label="Open game selection">Settings</button>
+    <nav class="game-sidebar" aria-label="Game navigation">
+      <a href="#snakeGame">Snake</a>
+      <a href="#runnerGame">Coin Runner</a>
+      <a href="#mazePanel">Lantern Maze</a>
+      <a href="#wordPanel">Word Forge</a>
+      <a href="#tankPanel">Tank Battle</a>
+      <a href="#defensePanel">President Defense</a>
+    </nav>
+  </div>
+
+  <main class="game-shell">
+    <section class="game-panel" id="snakeGame" aria-label="Snake game">
+      <div class="top-bar">
+        <div>
+          <h1>Snake Apple Sprint</h1>
+          <p>Use the arrow keys to guide the snake. Eat 10 apples to win.</p>
+        </div>
+        <div class="score-card" aria-live="polite">
+          <span>Apples</span>
+          <strong id="score">0 / 10</strong>
+        </div>
+      </div>
+
+      <div class="board-wrap">
+        <canvas id="gameCanvas" width="480" height="480" aria-label="Snake game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Ready?</h2>
+          <p id="overlayText">Press an arrow key or Start to begin.</p>
+          <button id="restartButton" type="button">Start Game</button>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <p><strong>Controls:</strong> Arrow keys move the snake. Avoid the walls and your own tail.</p>
+        <p><strong>Goal:</strong> Eat 10 apples. Use Restart any time for a fresh run.</p>
+      </div>
+
+      <button class="secondary-button" id="quickRestartButton" type="button">Restart</button>
+    </section>
+
+    <section class="game-panel runner-panel" id="runnerGame" aria-label="Coin runner game">
+      <div class="top-bar">
+        <div>
+          <h1>Coin Track Runner</h1>
+          <p>Dodge boxes, jump barriers, and slide under signs while collecting coins.</p>
+        </div>
+        <div class="score-card coin-score" aria-live="polite">
+          <span>Runner</span>
+          <strong id="runnerScore">Coins 0 | Lives 3</strong>
+        </div>
+      </div>
+
+      <div class="runner-wrap">
+        <canvas id="runnerCanvas" width="640" height="360" aria-label="Subway surfer style runner game"></canvas>
+        <div class="overlay runner-overlay" id="runnerOverlay">
+          <h2 id="runnerOverlayTitle">Ready?</h2>
+          <p id="runnerOverlayText">Press Start to run. Use arrows to switch lanes, jump, and slide under signs.</p>
+          <button id="runnerRestartButton" type="button">Start Run</button>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <p><strong>Controls:</strong> Left/Right or A/D switch lanes. Up, W, or Space jumps.</p>
+        <p><strong>Goal:</strong> Survive as long as you can. Collect coins, shields, and magnets. You have 3 lives.</p>
+      </div>
+
+      <button class="secondary-button" id="runnerQuickRestartButton" type="button">Restart Runner</button>
+    </section>
+
+    <section class="game-panel maze-panel" id="mazePanel" aria-label="Dark maze game">
+      <div class="top-bar">
+        <div>
+          <h1>Lantern Maze</h1>
+          <p>Find the glowing exit in a dark maze. Only the area near you is visible.</p>
+        </div>
+        <div class="score-card maze-status" aria-live="polite">
+          <span>Maze</span>
+          <strong id="mazeStats">100 HP</strong>
+        </div>
+      </div>
+
+      <div class="maze-wrap">
+        <canvas id="mazeCanvas" width="640" height="420" aria-label="Dark maze board"></canvas>
+        <div class="overlay maze-overlay" id="mazeOverlay">
+          <h2 id="mazeOverlayTitle">Enter the Maze</h2>
+          <p id="mazeOverlayText">Use the arrow buttons below to move through the dark. Press B to arm a bomb.</p>
+          <button id="mazeRestartButton" type="button">Start Maze</button>
+        </div>
+      </div>
+
+      <div class="maze-controls" aria-label="Maze movement buttons">
+        <button class="maze-arrow" id="mazeUpButton" type="button" aria-label="Move up">↑</button>
+        <button class="maze-arrow" id="mazeLeftButton" type="button" aria-label="Move left">←</button>
+        <button class="maze-arrow" id="mazeDownButton" type="button" aria-label="Move down">↓</button>
+        <button class="maze-arrow" id="mazeRightButton" type="button" aria-label="Move right">→</button>
+      </div>
+      <button class="give-up-button" id="mazeGiveUpButton" type="button">Give Up</button>
+
+      <div class="instructions">
+        <p><strong>Controls:</strong> Use the arrow buttons. Keyboard arrows work after clicking the maze. Press B to arm a bomb.</p>
+        <p><strong>Goal:</strong> The exit route can be completed in 400 steps or less. Avoid the monster, collect meat to heal, and use bombs to break walls.</p>
+      </div>
+
+      <button class="secondary-button" id="mazeQuickRestartButton" type="button">Restart Maze</button>
+    </section>
+
+    <section class="game-panel word-panel" id="wordPanel" aria-label="Word guessing game">
+      <div class="top-bar">
+        <div>
+          <h1>Word Forge</h1>
+          <p>Guess the hidden 5 or 6 letter word. The board changes size to match the word.</p>
+        </div>
+        <div class="score-card word-status" aria-live="polite">
+          <span>Word</span>
+          <strong id="wordStatus">Ready</strong>
+        </div>
+      </div>
+
+      <div class="word-board" id="wordBoard" aria-label="Word guesses"></div>
+
+      <form class="word-form" id="wordForm">
+        <input id="wordInput" type="text" autocomplete="off" spellcheck="false" aria-label="Enter your word guess">
+        <button id="wordGuessButton" type="submit">Guess</button>
+      </form>
+
+      <div class="word-message" id="wordMessage" aria-live="polite">Type a guess and press Guess.</div>
+
+      <div class="instructions">
+        <p><strong>Clues:</strong> Green means correct spot, gold means the letter is in the word, gray means not included.</p>
+        <p><strong>Goal:</strong> Solve the word in 6 guesses. New Game picks a fresh 5 or 6 letter word.</p>
+      </div>
+
+      <button class="secondary-button" id="wordRestartButton" type="button">New Game</button>
+    </section>
+
+    <section class="game-panel tank-panel" id="tankPanel" aria-label="Tank battle game">
+      <div class="top-bar">
+        <div>
+          <h1>Tank Battle</h1>
+          <p>Clear enemy waves, earn coins, repair your tank, and upgrade between stages.</p>
+        </div>
+        <div class="score-card tank-status" aria-live="polite">
+          <span>Tank</span>
+          <strong id="tankStats">Stage 1</strong>
+        </div>
+      </div>
+
+      <div class="tank-wrap">
+        <canvas id="tankCanvas" width="640" height="420" aria-label="Tank battle arena"></canvas>
+        <div class="overlay tank-overlay" id="tankOverlay">
+          <h2 id="tankOverlayTitle">Tank Ready</h2>
+          <p id="tankOverlayText">Use the arrow keys to move and press P to shoot.</p>
+          <button id="tankStartButton" type="button">Start Battle</button>
+        </div>
+      </div>
+
+      <div class="tank-shop" id="tankShop" hidden>
+        <button id="tankRepairButton" type="button">Repair 20 HP - 8 coins</button>
+        <button id="tankArmorButton" type="button">Armor +20 max HP - 14 coins</button>
+        <button id="tankDamageButton" type="button">Cannon +1 damage - 16 coins</button>
+        <button id="tankSpeedButton" type="button">Tracks +speed - 12 coins</button>
+        <button id="tankNextStageButton" type="button">Next Stage</button>
+      </div>
+
+      <div class="instructions">
+        <p><strong>Controls:</strong> Click the tank game first. Arrow keys move the tank. Press P to shoot.</p>
+        <p><strong>Goal:</strong> Defeat all enemies in each stage, spend coins on repairs/upgrades, then continue.</p>
+      </div>
+
+      <button class="secondary-button" id="tankRestartButton" type="button">Restart Tank Game</button>
+    </section>
+
+    <section class="game-panel defense-panel" id="defensePanel" aria-label="President tower defense game">
+      <div class="top-bar">
+        <div>
+          <h1>President Defense</h1>
+          <p>Build walls and defenses, fight as a soldier, and protect the president on the right side.</p>
+        </div>
+        <div class="score-card defense-status" aria-live="polite">
+          <span>Defense</span>
+          <strong id="defenseStats">Wave 1</strong>
+        </div>
+      </div>
+
+      <div class="defense-toolbar" aria-label="Defense build controls">
+        <button class="defense-tab" id="defensePlayerTabButton" type="button">Player Upgrades</button>
+        <button class="defense-tab active" id="defenseBuildTabButton" type="button">Defenses</button>
+        <button class="defense-tab" id="defenseUpgradeTabButton" type="button">Defense Upgrades</button>
+        <button class="defense-tab" id="defenseAbilityTabButton" type="button">Abilities</button>
+        <button class="defense-tab" id="defenseMergeTabButton" type="button">Merge</button>
+        <button class="defense-tab" id="defenseRepairTabButton" type="button">Repairs</button>
+        <button class="defense-tab" id="defenseStatsTabButton" type="button">Stats</button>
+        <button class="defense-tab" id="defenseHandbookTabButton" type="button">Handbook</button>
+        <button class="defense-tab" id="defenseDemoTabButton" type="button">Demo Mode</button>
+        <button id="defenseBattleModeButton" type="button">Battle Mode</button>
+        <button id="defenseWaveButton" type="button">Start Wave</button>
+        <button id="defenseReturnHomeButton" type="button" hidden>Return Home</button>
+      </div>
+
+      <div class="defense-menu">
+        <div class="defense-menu-panel" id="defensePlayerPanel">
+          <button id="defenseDamageUpgradeButton" type="button">Damage +1 - 24</button>
+          <button id="defenseBurstUpgradeButton" type="button">Burst Fire - 38</button>
+          <button id="defenseFireRateUpgradeButton" type="button">Faster Trigger - 30</button>
+          <button id="defenseHealthUpgradeButton" type="button">Health +190 - 20</button>
+          <div class="equipment-panel" id="defenseEquipmentPanel"></div>
+          <div class="defense-president-upgrades">
+            <small id="defensePresidentStatus">President Lv 1 | 100 HP</small>
+            <button id="defensePresidentHealthButton" type="button">President Health +50 - 120</button>
+          </div>
+        </div>
+        <div class="defense-menu-panel active" id="defenseBuildPanel">
+          <details class="defense-build-section" open>
+            <summary class="defense-build-section-title">Basics</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool active" id="defenseWallButton" type="button">Wall - 12</button>
+              <button class="defense-tool" id="defenseCampButton" type="button">Army Camp - 44</button>
+              <button class="defense-tool" id="defenseTankCampButton" type="button">Tank Camp - 78</button>
+              <button class="defense-tool" id="defenseAirfieldButton" type="button">Airfield - 90</button>
+              <button class="defense-tool" id="defenseTroopLauncherButton" type="button">Troop Launcher - 130</button>
+              <button class="defense-tool" id="defenseBuilderButton" type="button">Battle Builder - 110</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Weapons</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool" id="defenseTurretButton" type="button">Turret - 34</button>
+              <button class="defense-tool" id="defenseCannonButton" type="button">Cannon - 52</button>
+              <button class="defense-tool" id="defenseAntiAirButton" type="button">Anti-Air - 46</button>
+              <button class="defense-tool" id="defenseGrenadeButton" type="button">Grenade Tower - 74</button>
+              <button class="defense-tool" id="defenseMinigunButton" type="button">Minigun - 64</button>
+              <button class="defense-tool" id="defenseRicochetButton" type="button">Ricochet Cannon - 175</button>
+              <button class="defense-tool" id="defenseWizardButton" type="button">Wizard Tower - 45</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">High-End Weapons</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool" id="defenseSpellButton" type="button">Spell Tower - 260</button>
+              <button class="defense-tool" id="defenseInfernoSingleButton" type="button">Inferno Single - 420</button>
+              <button class="defense-tool" id="defenseInfernoMultiButton" type="button">Inferno Multi - 420</button>
+              <button class="defense-tool" id="defenseMonolithButton" type="button">Monolith - 500</button>
+              <button class="defense-tool" id="defenseXbowButton" type="button">X-Bow - 350</button>
+              <button class="defense-tool" id="defenseGigaTeslaButton" type="button">Giga Tesla - 480</button>
+              <button class="defense-tool" id="defenseScattershotButton" type="button">Scattershot - 400</button>
+              <button class="defense-tool" id="defenseAirburstButton" type="button">Explosive Air Defense - 96</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Traps</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool" id="defenseTrapButton" type="button">Bomb Trap - 24</button>
+              <button class="defense-tool" id="defenseGiantBombButton" type="button">Giant Bomb - 60</button>
+              <button class="defense-tool" id="defensePushTrapButton" type="button">Push Trap - 38</button>
+              <button class="defense-tool" id="defenseAirbombButton" type="button">Air Bomb - 76</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Artillery</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool" id="defenseMortarButton" type="button">Mortar - 88</button>
+              <button class="defense-tool" id="defenseMultiMortarButton" type="button">Multi Mortar - 124</button>
+              <button class="defense-tool" id="defenseMissileButton" type="button">Missile - 250</button>
+              <button class="defense-tool" id="defenseRapidMissileButton" type="button">Rapid Missile - 375</button>
+              <button class="defense-tool" id="defenseInfernoArtilleryButton" type="button">Inferno Artillery - 700</button>
+              <button class="defense-tool" id="defenseEagleButton" type="button">Eagle Artillery - 1000</button>
+            </div>
+          </details>
+          <details class="defense-build-section" id="defenseMergedBuildSection" hidden>
+            <summary class="defense-build-section-title">Merged Defenses</summary>
+            <div class="defense-build-items">
+              <button class="defense-tool" id="defenseFreezeSpellBuildButton" type="button">Freeze/Poison Spell Tower - 1000</button>
+              <button class="defense-tool" id="defenseLavaLauncherButton" type="button">Lava Launcher - 7500</button>
+              <button class="defense-tool" id="defenseYpj20Button" type="button">YPJ 20 - 35000</button>
+              <button class="defense-tool" id="defenseGigaInfernoButton" type="button">Giga Inferno - 15000</button>
+              <button class="defense-tool" id="defenseSuperWizardButton" type="button">Super Wizard Tower - 2000</button>
+            </div>
+          </details>
+        </div>
+        <div class="defense-menu-panel" id="defenseUpgradePanel">
+          <details class="defense-build-section" open>
+            <summary class="defense-build-section-title">Basics</summary>
+            <div class="defense-build-items">
+              <button id="defenseWallUpgradeButton" type="button">Stronger Walls - 26</button>
+              <button id="defenseCampUpgradeButton" type="button">Army Camp Training - 36</button>
+              <button id="defenseTankCampUpgradeButton" type="button">Tank Camp Training - 48</button>
+              <button id="defenseAirfieldUpgradeButton" type="button">Airfield Training - 54</button>
+              <button id="defenseTroopLauncherUpgradeButton" type="button">Troop Launcher - 62</button>
+              <button id="defenseBuilderUpgradeButton" type="button">Builder Repairs - 44</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Weapons</summary>
+            <div class="defense-build-items">
+              <button id="defenseTurretUpgradeButton" type="button">Turret Power - 34</button>
+              <button id="defenseCannonUpgradeButton" type="button">Cannon Power - 42</button>
+              <button id="defenseAntiAirUpgradeButton" type="button">Anti-Air Power - 38</button>
+              <button id="defenseGrenadeUpgradeButton" type="button">Grenade Power - 42</button>
+              <button id="defenseMinigunUpgradeButton" type="button">Minigun Power - 40</button>
+              <button id="defenseRicochetUpgradeButton" type="button">Ricochet Power - 64</button>
+              <button id="defenseWizardUpgradeButton" type="button">Wizard Tower slash</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">High-End Weapons</summary>
+            <div class="defense-build-items">
+              <button id="defenseSpellUpgradeButton" type="button">Spell Rage - 70</button>
+              <button id="defenseInfernoUpgradeButton" type="button">Inferno Heat - 100</button>
+              <button id="defenseFreezeSpellUpgradeButton" type="button">Freeze/Poison Spell - 95</button>
+              <button id="defenseMonolithUpgradeButton" type="button">Monolith Power - 90</button>
+              <button id="defenseXbowUpgradeButton" type="button">X-Bow Lv 2 - 190</button>
+              <button id="defenseGigaTeslaUpgradeButton" type="button">Giga Tesla damage/chains</button>
+              <button id="defenseGigaInfernoUpgradeButton" type="button">Giga Inferno burn</button>
+              <button id="defenseScattershotUpgradeButton" type="button">Scattershot damage</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Traps</summary>
+            <div class="defense-build-items">
+              <button id="defenseTrapUpgradeButton" type="button">Bomb Trap Power - 34</button>
+              <button id="defensePushTrapUpgradeButton" type="button">Push Trap distance</button>
+              <button id="defenseAirbombUpgradeButton" type="button">Airbomb Power - 46</button>
+            </div>
+          </details>
+          <details class="defense-build-section">
+            <summary class="defense-build-section-title">Artillery</summary>
+            <div class="defense-build-items">
+              <button id="defenseMortarUpgradeButton" type="button">Mortar Power - 52</button>
+              <button id="defenseMultiMortarUpgradeButton" type="button">Multi Mortar Power - 58</button>
+              <button id="defenseMissileUpgradeButton" type="button">Missile Power - 60</button>
+              <button id="defenseRapidMissileUpgradeButton" type="button">Rapid Missile Power - 72</button>
+              <button id="defenseInfernoArtilleryUpgradeButton" type="button">Inferno Artillery - 110</button>
+              <button id="defenseEagleUpgradeButton" type="button">Eagle Power - 120</button>
+              <button id="defenseHoneyLauncherButton" type="button">Honey Launcher Lv 1 - $5000</button>
+            </div>
+          </details>
+        </div>
+        <div class="defense-menu-panel ability-panel" id="defenseAbilityPanel">
+          <div class="ability-list" id="defenseAbilityList">Max a defense to unlock Phoenix.</div>
+        </div>
+        <div class="defense-menu-panel merge-panel" id="defenseMergePanel">
+          <div class="merge-list" id="defenseMergeList">Merge a Mortar and Spell Tower to unlock a Freeze/Poison Spell Tower.</div>
+        </div>
+        <div class="defense-menu-panel repair-panel" id="defenseRepairPanel">
+          <div class="repair-list" id="defenseRepairList">No damaged buildings.</div>
+        </div>
+        <div class="defense-menu-panel stats-panel" id="defenseStatsPanel">
+          <div class="defense-stat-list" id="defenseStatList">Select Stats to view defense power.</div>
+        </div>
+        <div class="defense-menu-panel handbook-panel" id="defenseHandbookPanel">
+          <div class="defense-handbook-list" id="defenseHandbookList">Select Handbook to view defense level progress.</div>
+        </div>
+        <div class="defense-menu-panel demo-panel" id="defenseDemoPanel">
+          <button id="defenseDemoToggleButton" type="button">Demo Mode: OFF</button>
+          <p>Turn on Demo Mode for infinite money while testing defenses, upgrades, repairs, and abilities.</p>
+          <label class="demo-wave-control">
+            Jump to wave
+            <input id="defenseDemoWaveInput" type="number" min="1" max="200" value="20">
+          </label>
+          <button id="defenseDemoWaveButton" type="button">Set Wave</button>
+          <p id="defenseDemoWaveStatus">Type a wave number, then start it.</p>
+        </div>
+      </div>
+
+      <div class="defense-wrap">
+        <canvas id="defenseCanvas" width="1080" height="480" aria-label="Side scrolling tower defense battlefield"></canvas>
+        <div class="overlay defense-overlay" id="defenseOverlay">
+          <h2 id="defenseOverlayTitle">Hold the Line</h2>
+          <p id="defenseOverlayText">Aim with the mouse and left click to shoot. Place defenses before starting a wave.</p>
+          <div class="defense-next-preview" id="defenseNextPreview" hidden></div>
+          <button id="defenseStartButton" type="button">Start Defense</button>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <p><strong>Controls:</strong> Click this game first. A/D or Left/Right scrolls the battlefield. W/S or Up/Down moves your soldier. Aim with the mouse and left click to shoot.</p>
+        <p><strong>Build:</strong> Use the tabs for player upgrades, defenses, and defense upgrades. Shift+click or right-click places selected defenses.</p>
+        <p><strong>Story Mode:</strong> Use the attack button below to raid the Plains, Forest, Cave Entrance, and deeper scenes. Every enemy drops ores, and each cleared level grants a random piece of equipment. After 3 attack levels, defend the president to recharge.</p>
+      </div>
+
+      <div class="defense-story-bar">
+        <button class="secondary-button defense-story-button" id="defenseStoryButton" type="button">Attack: Plains - Level 1</button>
+        <span class="defense-story-status" id="defenseStoryStatus">Story: Level 1 (Plains) | Attacks left: 3/3</span>
+      </div>
+
+      <button class="secondary-button" id="defenseRestartButton" type="button">Restart Defense</button>
+      <button class="secondary-button" id="defenseGiveUpButton" type="button">Give Up</button>
+    </section>
+  </main>
+
+  <script src="script.js?v=troops-4"></script>
+</body>
+</html>
